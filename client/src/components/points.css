@@ -1,0 +1,5 @@
+.responsive-table th,
+.responsive-table td {
+    padding: 10px; /* Adjust the value as needed */
+    text-align: center;
+}
