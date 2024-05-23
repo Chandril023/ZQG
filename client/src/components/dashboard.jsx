@@ -21,7 +21,7 @@ function AdminDashboard() {
 
   const generateToken = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/admin/generate-token', { username, inGameId });
+      const response = await axios.post('https://zqgofficialapp-979i.onrender.com/admin/generate-token', { username, inGameId });
       const { paymentToken } = response.data;
       
       setPaymentToken(paymentToken);

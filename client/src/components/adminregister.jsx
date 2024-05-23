@@ -29,7 +29,7 @@ export default function AdminRegister() {
 
         try {
             // Send a request to create the user
-            const response = await axios.post('http://localhost:5000/admin/register-user', {
+            const response = await axios.post('https://zqgofficialapp-979i.onrender.com/admin/register-user', {
                 fullName,
                 email,
                 phoneNumber,

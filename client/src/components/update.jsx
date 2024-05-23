@@ -32,7 +32,7 @@ function Update() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/admin/update-player/${formData.fullName}`, formData);
+      await axios.put(`https://zqgofficialapp-979i.onrender.com/admin/update-player/${formData.fullName}`, formData);
       console.log('Player stats updated successfully:', formData);
       setFormData({
         fullName: '',
@@ -53,7 +53,7 @@ function Update() {
   const fetchUsernames = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5000/admin/table-users`); // Adjusted endpoint
+      const response = await axios.get(`https://zqgofficialapp-979i.onrender.com/admin/table-users`); // Adjusted endpoint
       setUsernames(response.data.allUsernames);
     } catch (error) {
       console.error('Error fetching usernames:', error);
