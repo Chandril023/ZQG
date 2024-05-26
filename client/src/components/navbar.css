@@ -24,7 +24,6 @@ a:focus {
     transition: all 0.3s;
 }
 
-  
 .navbar {
     padding: 15px 10px;
     background: #ffffff;
@@ -60,7 +59,7 @@ a:focus {
         font-weight: 300;
         font-family: fantasy; /* Change this to your desired font family */
         margin-bottom: 50px;
-      }
+    }
 }
 
 #sidebar {
@@ -98,14 +97,14 @@ a:focus {
 }
 
 #sidebar ul li a:hover {
-    color: #7386D5;
-    background: #fff;
+    color: #ff0000;
+    background: #000000;
 }
 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
-    color: #fff;
-    background: #6d7fcc;
+    color: #000000;
+    background: #ff0000;
 }
 
 a[data-toggle="collapse"] {
@@ -123,7 +122,27 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #6d7fcc;
+    background: #000000;
+}
+
+/* Dropdown Styles */
+.dropdown-menu {
+    background-color: #000000;
+    border: none;  /* Remove border */
+    padding: 0;    /* Reset padding */
+    margin: 0;     /* Reset margin */
+}
+
+.dropdown-menu a {
+    color: #ffffff;
+    padding: 10px 20px;
+    display: block;
+    white-space: nowrap;
+}
+
+.dropdown-menu a:hover {
+    color: #ff0000;
+    background-color: #000000;
 }
 
 ul.CTAs {
@@ -175,13 +194,14 @@ a.article:hover {
         display: none;
     }
 }
-h1{
+
+h1 {
     margin-bottom: 20px;
     font-weight: 1000; /* Adjust the weight to make it heavier */
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     margin-bottom: 25px;
-
 }
-#sidebar-header{
+
+#sidebar-header {
     background-color: #000000;
 }

@@ -4,7 +4,7 @@ import Carousel from './carousal';
 import { Link } from 'react-router-dom';
 import Points from './points';
 
-function Navbar() {
+function Coop() {
   const [sidebarActive, setSidebarActive] = useState(false);
 
   const toggleSidebar = () => {
@@ -54,7 +54,6 @@ function Navbar() {
               <span>ZQG</span>
             </button>
             <h2>ZQG Esports</h2>
-            <h2></h2>
             <button className="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <i className="fas fa-align-justify"></i>
             </button>
@@ -91,4 +90,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default Coop;

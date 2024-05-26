@@ -5,8 +5,10 @@ import {BrowserRouter, Routes, Route,Navigate} from 'react-router-dom'
 import AdminLogin from './components/adminlogin';
 import AdminDashboard from './components/dashboard';
 import { useState } from 'react';
+import Coop from './components/coop';
 import ProtectedRoute from './components/protectedroute';
 import './App.css'
+import Efootball from './components/efootball';
 
 
 function App() {
@@ -27,7 +29,8 @@ function App() {
         }
         />
         <Route path='/home' element={<Home />}/>
-      
+        <Route path='/efootball' element={<Efootball/>}/>
+        <Route path='/efootballcoop' element={<Coop/>}/>
       </Routes>
     </BrowserRouter>
   );

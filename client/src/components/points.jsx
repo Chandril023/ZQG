@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './points.css';
 
-
-
-
 export default function Points() {
    
     const [users, setUsers] = useState([]);
@@ -36,7 +33,7 @@ export default function Points() {
 
     return (
         <div className="points-table">
-            <h4>Points Table</h4>
+            <h2>Points Table</h2>
             <table className="responsive-table">
                 <thead>
                     <tr>
@@ -47,7 +44,7 @@ export default function Points() {
                         <th>L</th>
                      
                         <th>GD</th>
-                        <th>Points</th>
+                        <th>P</th>
                     </tr>
                 </thead>
                 <tbody>
