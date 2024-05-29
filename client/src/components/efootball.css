@@ -1,0 +1,8 @@
+.container-head-1{
+    background-image: url("./photos/efootball.jpg") ;
+    background-size: cover; /* Cover the entire div */
+    background-position: center; /* Center the image */
+    padding: 3rem;
+    color: #fff;
+   
+}

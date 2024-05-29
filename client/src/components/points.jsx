@@ -9,7 +9,7 @@ export default function Points() {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get(`https://zqgofficialapp-979i.onrender.com/admin/table-info`);
+                const response = await axios.get(`http://localhost:5000/admin/table-info`);
                 let sortedUsers = response.data.sort((a, b) => {
                     // Sort by total points
                     if (b.totalPoints !== a.totalPoints) {
@@ -33,7 +33,6 @@ export default function Points() {
 
     return (
         <div className="points-table">
-            <h2>Points Table</h2>
             <table className="responsive-table">
                 <thead>
                     <tr>
@@ -42,7 +41,6 @@ export default function Points() {
                         <th>W</th>
                         <th>D</th>
                         <th>L</th>
-                     
                         <th>GD</th>
                         <th>P</th>
                     </tr>
@@ -50,13 +48,11 @@ export default function Points() {
                 <tbody>
                     {users.map((user, index) => (
                         <tr key={index}>
-                            <td data-label="User name">{user.fullName}</td>
-                            
+                            <td data-label="User name">{user.inGameId}</td>
                             <td data-label="Matches Played">{user.matchesPlayed}</td>
                             <td data-label="Wins">{user.wins}</td>
                             <td data-label="Draws">{user.draws}</td>
                             <td data-label="Losses">{user.losses}</td>
-                         
                             <td data-label="Goal Difference">{user.goalDifference}</td>
                             <td data-label="Total Points">{user.totalPoints}</td>
                         </tr>

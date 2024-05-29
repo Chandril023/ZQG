@@ -5,140 +5,54 @@ import './matchdaycarousal.css';
 
 // Example data structure for matches, organized by matchday
 const matchData = [
-  [
-    { match: ' Saphronix 3-1 Ronin' },
-    { match: ' Hellfire 1-1 Blaze'  },
-    { match: ' Team E vs Team F' },
-    { match: ' Team G vs Team H' },
-    { match: ' Team I vs Team J' },
-    { match: ' Team K vs Team L' },
-    { match: ' Team M vs Team N' },
-  ],
-  [
+  [  {match: 'MatchDay 1'},
     { match: ' Ronin 2-1 Blaze' },
-    { match: ' Saphronix 6-2 Hellfire'  },
-    { match: ' Team E vs Team F' },
-    { match: ' Team G vs Team H' },
-    { match: ' Team I vs Team J' },
-    { match: ' Team K vs Team L' },
-    { match: ' Team M vs Team N' },
+    { match: ' Hellfire 4-0 Rage'  },
+    { match: ' Tubu 1-0 Risabh' },
+    { match: ' Neel 2-0 Analysis' },
+    { match: ' Saphronix 2-0 Sampreet' },
+    { match: ' Pyro 1-0 Mou' },
+    { match: ' Avigyan 2-1 LordSid' },
+    
   ],
-  [
+  [ {match: 'MatchDay 2'},
+    { match: ' Rishabh 6-3 Banty' },
+    { match: ' Blaze 1-1 Hellfire'  },
+    { match: ' Tuban 3-2 Analysis' },
+    { match: ' Saphronix 3-1 Ronin' },
+    { match: ' Neel 2-0 Pyro' },
+    { match: ' Sampreet 2-0 Lordsid' },
+    { match: ' Avigyan 4-0 Mou' },
+  
+  ],
+  [  {match: 'MatchDay 3'},
     { match: ' Lorsid 2-1 Ronin' },
-    { match: ' Team C vs Team D'  },
-    { match: ' Team E vs Team F' },
-    { match: ' Team G vs Team H' },
-    { match: ' Team I vs Team J' },
-    { match: ' Team K vs Team L' },
-    { match: ' Team M vs Team N' },
+    { match: ' Blaze 2-0 Rage'  },
+    { match: ' Saphronix 6-2 Hellfire' },
+    { match: ' Neel 2-2 Avigyan' },
+    { match: ' Sampreet 5-2 Mou' },
+    { match: ' Banty 3-0 Analysis' },
+    { match: ' Tuban - Pyro' },
+  
   ],
-  [
-    { match: ' Ronin 2-1 Neel' },
-    { match: ' Team C vs Team D'  },
-    { match: ' Team E vs Team F' },
-    { match: ' Team G vs Team H' },
-    { match: ' Team I vs Team J' },
-    { match: ' Team K vs Team L' },
-    { match: ' Team M vs Team N' },
-  ],
-  [
-    { match: ' Ronin 2-0 Tuban' },
-    { match: ' Team C vs Team D'  },
-    { match: ' Team E vs Team F' },
-    { match: ' Team G vs Team H' },
-    { match: ' Team I vs Team J' },
-    { match: ' Team K vs Team L' },
-    { match: ' Team M vs Team N' },
-  ],
-  [
+  [ {match: 'MatchDay 4'},
     { match: ' Ronin 4-0 Mou' },
-    { match: ' Team C vs Team D'  },
-    { match: ' Team E vs Team F' },
-    { match: ' Team G vs Team H' },
-    { match: ' Team I vs Team J' },
-    { match: ' Team K vs Team L' },
-    { match: ' Team M vs Team N' },
+    { match: ' Saphronix 3-0 Rage'  },
+    { match: ' Hellfire 3 -0 Lordsid' },
+    { match: ' Avigyan 2-3 Tuban' },
+    { match: ' Sampreet 5-1 Neel' },
+    { match: ' Pyro - Banty' },
+    { match: ' Analysis - Rishabh' },
+  
   ],
-  [
-    { match: ' Team A vs Team B' },
-    { match: ' Team C vs Team D'  },
-    { match: ' Team E vs Team F' },
-    { match: ' Team G vs Team H' },
-    { match: ' Team I vs Team J' },
-    { match: ' Team K vs Team L' },
-    { match: ' Team M vs Team N' },
-  ],
-  [
-    { match: ' Team A vs Team B' },
-    { match: ' Team C vs Team D'  },
-    { match: ' Team E vs Team F' },
-    { match: ' Team G vs Team H' },
-    { match: ' Team I vs Team J' },
-    { match: ' Team K vs Team L' },
-    { match: ' Team M vs Team N' },
-  ],
-  [
-    { match: ' Team A vs Team B' },
-    { match: ' Team C vs Team D'  },
-    { match: ' Team E vs Team F' },
-    { match: ' Team G vs Team H' },
-    { match: ' Team I vs Team J' },
-    { match: ' Team K vs Team L' },
-    { match: ' Team M vs Team N' },
-  ],
-  [
-    { match: ' Team A vs Team B' },
-    { match: ' Team C vs Team D'  },
-    { match: ' Team E vs Team F' },
-    { match: ' Team G vs Team H' },
-    { match: ' Team I vs Team J' },
-    { match: ' Team K vs Team L' },
-    { match: ' Team M vs Team N' },
-  ],
-  [
-    { match: ' Team A vs Team B' },
-    { match: ' Team C vs Team D'  },
-    { match: ' Team E vs Team F' },
-    { match: ' Team G vs Team H' },
-    { match: ' Team I vs Team J' },
-    { match: ' Team K vs Team L' },
-    { match: ' Team M vs Team N' },
-  ],
-  [
-    { match: ' Team A vs Team B' },
-    { match: ' Team C vs Team D'  },
-    { match: ' Team E vs Team F' },
-    { match: ' Team G vs Team H' },
-    { match: ' Team I vs Team J' },
-    { match: ' Team K vs Team L' },
-    { match: ' Team M vs Team N' },
-  ],
-  [
-    { match: ' Team A vs Team B' },
-    { match: ' Team C vs Team D'  },
-    { match: ' Team E vs Team F' },
-    { match: ' Team G vs Team H' },
-    { match: ' Team I vs Team J' },
-    { match: ' Team K vs Team L' },
-    { match: ' Team M vs Team N' },
-  ],
-  [
-    { match: ' Team A vs Team B' },
-    { match: ' Team C vs Team D'  },
-    { match: ' Team E vs Team F' },
-    { match: ' Team G vs Team H' },
-    { match: ' Team I vs Team J' },
-    { match: ' Team K vs Team L' },
-    { match: ' Team M vs Team N' },
-  ],
+ 
   // Add more matchdays as needed
 ];
 
 const renderMatches = (matchday) => {
   return matchday.map((match, index) => (
     <div key={index} className="match-info">
-      <p>{match.match}</p>
-      <p>{match.time}</p>
+      <p className='dm-serif-display-regular'>{match.match}</p>
     </div>
   ));
 };

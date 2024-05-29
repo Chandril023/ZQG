@@ -9,7 +9,7 @@ export default function AdminPoints() {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get(`https://zqgofficialapp-979i.onrender.com/admin/table-info`);
+                const response = await axios.get(`http://localhost:5000/admin/table-info`);
                 let sortedUsers = response.data.sort((a, b) => {
                     // Sort by total points
                     if (b.totalPoints !== a.totalPoints) {

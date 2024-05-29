@@ -1,15 +1,15 @@
 import React from 'react';
-import Home from "./components/home";
+
 import Register from "./components/register";
 import {BrowserRouter, Routes, Route,Navigate} from 'react-router-dom'
 import AdminLogin from './components/adminlogin';
 import AdminDashboard from './components/dashboard';
 import { useState } from 'react';
-import Coop from './components/coop';
+
 import ProtectedRoute from './components/protectedroute';
 import './App.css'
 import Efootball from './components/efootball';
-
+import Landing from './components/landing';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,7 +17,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-      <Route path="/" element={<Navigate to="/home" />} />
+      <Route path="/" element={<Landing/>}/>
         <Route path='/register' element={<Register/>}/>
         <Route path='/admin/login' element={<AdminLogin setIsAuthenticated={setIsAuthenticated} />}/>
         <Route
@@ -28,9 +28,9 @@ function App() {
             </ProtectedRoute>
         }
         />
-        <Route path='/home' element={<Home />}/>
+
         <Route path='/efootball' element={<Efootball/>}/>
-        <Route path='/efootballcoop' element={<Coop/>}/>
+     
       </Routes>
     </BrowserRouter>
   );

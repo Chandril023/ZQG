@@ -57,7 +57,7 @@ router.post('/create-user', async (req, res) => {
 });
 router.get('/table-users', async (req, res) => {
     try {
-      const allUsernames = await RegisteredUser.distinct('fullName');
+      const allUsernames = await RegisteredUser.distinct('inGameId');
       res.json({ allUsernames }); // Send usernames in the response
     } catch (error) {
       console.error(error);
@@ -73,18 +73,18 @@ router.get('/table-info', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-router.put('/update-player/:fullName', async (req, res) => {
-    const { fullName } = req.params;
+router.put('/update-player/:inGameId', async (req, res) => {
+    const { inGameId } = req.params;
     const { matchesPlayed, wins, losses, draws, goalsScored, goalsConceded } = req.body;
 
     try {
         // Validate data
-        if (!fullName || matchesPlayed === undefined || wins === undefined || losses === undefined || draws === undefined || goalsScored === undefined || goalsConceded === undefined) {
+        if (!inGameId || matchesPlayed === undefined || wins === undefined || losses === undefined || draws === undefined || goalsScored === undefined || goalsConceded === undefined) {
             return res.status(400).json({ message: 'Missing required fields' });
         }
-
+        const totalPoints = (wins * 3) + (draws * 1);
         const updatedUser = await RegisteredUser.findOneAndUpdate(
-            { fullName }, // Search by full name
+            { inGameId }, // Search by full name
             {
                 matchesPlayed,
                 wins,
@@ -92,7 +92,7 @@ router.put('/update-player/:fullName', async (req, res) => {
                 draws,
                 goalsScored,
                 goalsConceded,
-                totalPoints: (wins * 3) + draws, // Calculate total points
+                totalPoints,// Calculate total points
                 goalDifference: goalsScored - goalsConceded, // Calculate goal difference
             },
             { new: true } // { new: true } returns the updated document

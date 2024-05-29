@@ -12,7 +12,7 @@ function AdminLogin({ setIsAuthenticated }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://zqgofficialapp-979i.onrender.com/admin/login', { username, password });
+            const response = await axios.post('http://localhost:5000/admin/login', { username, password });
             const token = response.data.token; // Extract the token from the response
             console.log(token);
             localStorage.setItem('token', token); // Store the token in local storage
@@ -44,7 +44,7 @@ function AdminLogin({ setIsAuthenticated }) {
                             <button className="btn btn-primary">Login</button>
                         </div>
                     </form>
-                    <Link to="/home" className="d-block text-center mt-2 text-white">Return to Home</Link>
+                    <Link to="/" className="d-block text-center mt-2 text-white">Return to Home</Link>
                 </div>
             </div>
         </div>

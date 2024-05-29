@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Redirect } from 'react-router-dom';
+
 
 
 function Update() {
 
   const [redirectTo, setRedirectTo] = useState(null);
   const [formData, setFormData] = useState({
-    fullName: '',
+    inGameId:'',
     matchesPlayed: 0,
     wins: 0,
     losses: 0,
@@ -32,10 +32,10 @@ function Update() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.put(`https://zqgofficialapp-979i.onrender.com/admin/update-player/${formData.fullName}`, formData);
+      await axios.put(`http://localhost:5000/admin/update-player/${formData.inGameId}`, formData);
       console.log('Player stats updated successfully:', formData);
       setFormData({
-        fullName: '',
+        inGameId:'',
         matchesPlayed: 0,
         wins: 0,
         losses: 0,
@@ -53,7 +53,7 @@ function Update() {
   const fetchUsernames = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`https://zqgofficialapp-979i.onrender.com/admin/table-users`); // Adjusted endpoint
+      const response = await axios.get(`http://localhost:5000/admin/table-users`); // Adjusted endpoint
       setUsernames(response.data.allUsernames);
     } catch (error) {
       console.error('Error fetching usernames:', error);
@@ -71,9 +71,12 @@ function Update() {
     <form className='registerform' onSubmit={handleSubmit}>
       <h2>Player Stats</h2>
       <div className="input-group input-group-icon">
-        <label htmlFor="fullName">Full Name:</label>
+        <label htmlFor="inGameId">User name:</label>
         <p>
-        <select id="fullName" name="fullName" value={formData.fullName} onChange={handleChange}>
+        <select id="inGameId" name="inGameId" value={formData.inGameId} onChange={handleChange}>
+        <option value="" disabled>
+                Select player
+            </option>
           {isLoading ? (
             <option>Loading...</option>
           ) : error ? (
@@ -90,7 +93,7 @@ function Update() {
       </div>
       <div className='row'>
       <div className="input-group input-group-icon">
-        <p>
+        
         <label htmlFor="matchesPlayed">Matches Played:</label>
         <input
           type="number"
@@ -101,7 +104,7 @@ function Update() {
           min="0"
           required
         />
-        </p>
+    
       </div>
       </div>
       <div className="row">

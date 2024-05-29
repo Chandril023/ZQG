@@ -1,8 +1,8 @@
 /* footer.css */
 
 footer {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #000000;
+    color: #ffffff;
     padding: 20px 0;
     text-align: center;
   }
@@ -12,7 +12,7 @@ footer {
   }
   
   .social a {
-    color: #030303;
+    color: #ffffff;
     font-size: 24px;
     margin: 0 10px;
   }
@@ -31,11 +31,12 @@ footer {
   }
   
   .list-inline-item a {
-    color: #000000;
+    color: #ffffff;
     text-decoration: none;
   }
   
   .copyright {
     font-size: 14px;
+    color: #ffffff;
   }
   

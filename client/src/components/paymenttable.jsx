@@ -10,7 +10,7 @@ const PaymentTable = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get('https://zqgofficialapp-979i.onrender.com/admin/payments-info');
+                const response = await axios.get('http://localhost:5000/admin/payments-info');
                 setUsers(response.data);
             } catch (error) {
                 console.error('Error fetching user data:', error);

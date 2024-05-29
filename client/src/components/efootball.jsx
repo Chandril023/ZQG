@@ -1,78 +1,30 @@
 import React, { useState } from 'react';
-import './navbar.css';
-import Carousel from './carousal';
-import { Link } from 'react-router-dom';
-
+import Menu from './menu';
+import './efootball.css'
 import Points from './points';
 import MatchdayCarousel from './matchday';
+import Footer from './footer';
 
 function Efootball() {
-  const [sidebarActive, setSidebarActive] = useState(false);
-
-  const toggleSidebar = () => {
-    setSidebarActive(!sidebarActive);
-  };
-
-  return (
-    <div className="wrapper">
-      <nav id="sidebar" className={sidebarActive ? 'active' : ''}>
-        <div className="sidebar-header">
-          <h3>ZQG Esports</h3>
-        </div>
-        <ul className="list-unstyled components">
-          <p>Menu</p>
-          <li>
-            <Link to="/home">Home</Link>
-          </li>
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-          <li className="dropdown">
-            <a href="#tournaments" data-toggle="dropdown" aria-expanded="false">Tournaments</a>
-            <ul className="dropdown-menu">
-              <li><Link to="/efootball">E-Football Tournament</Link></li>
-              <li><Link to="/efootballcoop">E-Football Coop Tournament</Link></li>
-              <li><Link to="/tournament3">Tournament 3</Link></li>
-            </ul>
-          </li>
-          <li>
-            <Link to="/admin/login">Admin Login</Link>
-          </li>
-          <li>
-            <a href="#points">Points</a>
-          </li>
-          <li>
-            <a href="#footer">Contact</a>
-          </li>
-        </ul>
-      </nav>
-
-      <div id="content">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <div className="container-fluid">
-            <button type="button" id="sidebarCollapse" className="btn btn-info" onClick={toggleSidebar}>
-              <i className="fas fa-align-left"></i>
-              <span>ZQG</span>
-            </button>
-            <h2>ZQG Esports</h2>
-            <h2></h2>
-            <button className="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <i className="fas fa-align-justify"></i>
-            </button>
+return(<>
+<Menu/>
+        <div class="overlay">
+        <div className='container-head-1'>
+        <div className="pt-5 text-white">
+          <header className="py-5 mt-5">
+            <h4 className="lead mb-0">ZQG</h4>
+            <h1 className='dm-serif-display-regular'>Efootball Tournament 2024</h1>
+            <h4 className="lead mb-0">Esports</h4>
+          </header>
           </div>
-        </nav>
-
-        <h2>ZQG Efootball 2024 is Live </h2>
-        
-        <MatchdayCarousel />
-
-        <div className="line"></div>
+          </div>
+        </div>
+        <div className="container-body">
+        <p className="lead" ><strong className="">MATCHDAY</strong></p>
+        <MatchdayCarousel/>
+        <p className="lead" ><strong className="">POINTS TABLE</strong></p>
         <Points/>
-        
-
-        <div className="line"></div>
-
-        <h2>Rules</h2>
+        <p className="lead" ><strong className="">RULES</strong></p>
         <p>
           1) Participants: 15 <br />
           2) Entry fees: ₹20 <br />
@@ -85,12 +37,9 @@ function Efootball() {
           9) No simultaneous back passes to the gk allowed. If screen recording is provided, direct victory to the opponent and ban if repeated. <br />
           10) Network issue complaints shall be dealt with accordingly.
         </p>
-
-        <div className="line"></div>
-        
-      </div>
-    </div>
-  );
+        </div>
+        <Footer/>
+</>)
 }
 
 export default Efootball;
