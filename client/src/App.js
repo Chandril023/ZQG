@@ -21,13 +21,13 @@ function App() {
         <Route path='/register' element={<Register/>}/>
         <Route path='/admin/login' element={<AdminLogin setIsAuthenticated={setIsAuthenticated} />}/>
         <Route
-          path="/admin/dashboard"
-          element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <AdminDashboard setIsAuthenticated={setIsAuthenticated} />
-            </ProtectedRoute>
-        }
-        />
+         path="/admin/dashboard"
+  element={
+    <ProtectedRoute isAuthenticated={isAuthenticated}>
+      <AdminDashboard setIsAuthenticated={setIsAuthenticated} />
+    </ProtectedRoute>
+  }
+/>
 
         <Route path='/efootball' element={<Efootball/>}/>
      

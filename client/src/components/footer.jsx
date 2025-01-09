@@ -11,7 +11,7 @@ export default function Footer(){
                 <li class="list-inline-item"><a href="#">Terms</a></li>
                 <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
             </ul>
-            <p class="copyright">Design and maintained by @Chandril</p>
+            <p class="copyright">Design and maintained by @<a href='https://chandril365.vercel.app'>Chandril</a></p>
         </footer>
 
 </>

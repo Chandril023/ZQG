@@ -3,6 +3,7 @@ import Footer from "./footer"
 import Menu from "./menu"
 import './landing.css'
 import { Link } from 'react-router-dom'
+import Skills from "./skills"
 
 export default function Landing()
 {
@@ -17,6 +18,7 @@ export default function Landing()
           </header>
           </div>
           </div>
+          <Skills/>
           <div className='container-body'>
           <div className="py-5">
           <p className="lead"><strong className="">ONGOING EVENTS</strong></p>

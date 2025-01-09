@@ -1,152 +1,171 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import PaymentTable from './paymenttable';
-import Update from './update';
-import AdminRegister from './adminregister';
-import AdminPoints from './adminpointstable';
+import React, { useState, useEffect } from 'react';
+import './adminlanding.css';
+import { SignOutButton } from '@clerk/clerk-react';
 
-function AdminDashboard() {
-  const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [inGameId, setInGameId] = useState('');
-  const [paymentToken, setPaymentToken] = useState('');
-  const [activeSection, setActiveSection] = useState('payments');
+const Dashboard = () => {
+  const [registeredUsers, setRegisteredUsers] = useState([]);
+  const [matches, setMatches] = useState([]);
+  const [tableData, setTableData] = useState([]);
+  const [activeSection, setActiveSection] = useState('dashboard');
+  const [loading, setLoading] = useState({
+    users: true,
+    matches: true,
+    table: true
+  });
+  const [error, setError] = useState({
+    users: null,
+    matches: null,
+    table: null
+  });
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/admin/login');
+  useEffect(() => {
+    fetch('/admin/registered-users')
+      .then(res => res.json())
+      .then(data => {
+        setRegisteredUsers(data);
+        setLoading(prev => ({ ...prev, users: false }));
+      })
+      .catch(() => {
+        setError(prev => ({ ...prev, users: 'Unable to fetch registered users' }));
+        setLoading(prev => ({ ...prev, users: false }));
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch('/admin/fetch-table')
+      .then(res => res.json())
+      .then(data => {
+        setTableData(data);
+        setLoading(prev => ({ ...prev, table: false }));
+      })
+      .catch(() => {
+        setError(prev => ({ ...prev, table: 'Unable to fetch table data' }));
+        setLoading(prev => ({ ...prev, table: false }));
+      });
+  }, []);
+
+  const generateMatch = () => {
+    if (registeredUsers.length < 2) {
+      alert('Not enough users to generate a match');
+      return;
+    }
+
+    const shuffled = [...registeredUsers].sort(() => 0.5 - Math.random());
+    const newMatch = {
+      userA: shuffled[0],
+      userB: shuffled[1],
+      score: '0-0'
+    };
+
+    setMatches(prev => [...prev, newMatch]);
   };
 
-  const generateToken = async () => {
-    try {
-      const response = await axios.post('http://localhost:5000/admin/generate-token', { username, inGameId });
-      const { paymentToken } = response.data;
-      setPaymentToken(paymentToken);
-      setUsername('');
-      setInGameId('');
-    } catch (error) {
-      console.error('Error generating token:', error);
+  const RegisteredUsersSection = () => (
+    <section className="card">
+      <h2>Registered Users</h2>
+      {loading.users ? (
+        <p>Loading...</p>
+      ) : error.users ? (
+        <p className="error">{error.users}</p>
+      ) : (
+        <ul>
+          {registeredUsers.map((user, index) => (
+            <li key={index}>{user.name} ({user.username})</li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+
+  const MatchesSection = () => (
+    <section className="card">
+      <h2>Set Match</h2>
+      <button onClick={generateMatch}>Generate Match</button>
+      <ul>
+        {matches.map((match, index) => (
+          <li key={index}>{match.userA.username} vs {match.userB.username}</li>
+        ))}
+      </ul>
+    </section>
+  );
+
+  const LeagueTableSection = () => (
+    <section className="card">
+      <h2>League Table</h2>
+      {loading.table ? (
+        <p>Loading...</p>
+      ) : error.table ? (
+        <p className="error">{error.table}</p>
+      ) : (
+        <ul>
+          {tableData.map((row, index) => (
+            <li key={index}>{row.name} - Points: {row.points}</li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'dashboard':
+        return (
+          <>
+            <RegisteredUsersSection />
+            <MatchesSection />
+            <LeagueTableSection />
+          </>
+        );
+      case 'users':
+        return <RegisteredUsersSection />;
+      case 'matches':
+        return <MatchesSection />;
+      case 'league':
+        return <LeagueTableSection />;
+      default:
+        return null;
     }
   };
 
   return (
-    <>
-      <nav className='admin-dashboard-navbar'>
-        <ul>
-          <li onClick={() => setActiveSection('payments')}>Payments</li>
-          <li onClick={() => setActiveSection('registrations')}>Registrations</li>
-          <li onClick={() => setActiveSection('updations')}>Updations</li>
-          <li onClick={() => setActiveSection('points')}>Points</li>
+    <div className="dashboard-container">
+      <nav className="sidebar">
+        <div className="sidebar-header">
+          <h3>Admin Dashboard</h3>
+        </div>
+        <ul className="sidebar-menu">
+          <li 
+            className={activeSection === 'dashboard' ? 'active' : ''} 
+            onClick={() => setActiveSection('dashboard')}
+          >
+            Dashboard
+          </li>
+          <li 
+            className={activeSection === 'users' ? 'active' : ''} 
+            onClick={() => setActiveSection('users')}
+          >
+            Users
+          </li>
+          <li 
+            className={activeSection === 'matches' ? 'active' : ''} 
+            onClick={() => setActiveSection('matches')}
+          >
+            Matches
+          </li>
+          <li 
+            className={activeSection === 'league' ? 'active' : ''} 
+            onClick={() => setActiveSection('league')}
+          >
+            League Table
+          </li>
+          <li><SignOutButton/></li>
         </ul>
       </nav>
-      <div className='content'>
-        <h2>Admin Dashboard</h2>
-        {activeSection === 'payments' && (
-          <>
-            <h3>Generate Payment Token</h3>
-            <div className="row">
-              <h4>Account</h4>
-              <div className="input-group input-group-icon">
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-                <div className="input-icon"><i className="fa fa-user"></i></div>
-              </div>
-              <div className="input-group input-group-icon">
-                <input
-                  type="text"
-                  placeholder="IN-GAME-ID"
-                  value={inGameId}
-                  onChange={(e) => setInGameId(e.target.value)}
-                />
-                <div className="input-icon"><i className="fa fa-key"></i></div>
-              </div>
-              <button onClick={generateToken}>Generate</button>
-            </div>
-            <h3>Payment Token Database</h3>
-            <PaymentTable />
-          </>
-        )}
-        {activeSection === 'points' && (
-          <>
-            <h3>Master Points Database</h3>
-            <AdminPoints />
-          </>
-        )}
-        {activeSection === 'updations' && (
-          <>
-            <h2>Update the database</h2>
-            <Update />
-          </>
-        )}
-        {activeSection === 'registrations' && (
-          <>
-            <h2>Admin Register</h2>
-            <AdminRegister />
-          </>
-        )}
-        <button onClick={handleLogout}>Sign Out</button>
-      </div>
-      <style jsx>{`
-        .admin-dashboard-navbar {
-          background-color: #333;
-          padding: 10px;
-          width:auto;
-        }
-        .admin-dashboard-navbar ul {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-          display: flex;
-          justify-content: space-around;
-        }
-        .admin-dashboard-navbar ul li {
-          color: white;
-          cursor: pointer;
-          padding: 10px 20px;
-          transition: background-color 0.3s;
-        }
-        .admin-dashboard-navbar ul li:hover {
-          background-color: #555;
-        }
-        .content {
-          padding: 20px;
-        }
-        .row {
-          margin-bottom: 20px;
-        }
-        .input-group {
-          margin-bottom: 15px;
-        }
-        .input-group-icon {
-          display: flex;
-          align-items: center;
-        }
-        .input-group-icon input {
-          padding: 10px;
-          margin-right: 5px;
-        }
-        .input-icon {
-          color: #555;
-        }
-        button {
-          padding: 10px 20px;
-          background-color: #007bff;
-          color: white;
-          border: none;
-          cursor: pointer;
-          transition: background-color 0.3s;
-        }
-        button:hover {
-          background-color: #0056b3;
-        }
-      `}</style>
-    </>
+      <main className="main-content">
+        {renderContent()}
+      </main>
+    </div>
   );
-}
+};
 
-export default AdminDashboard;
+export default Dashboard;
