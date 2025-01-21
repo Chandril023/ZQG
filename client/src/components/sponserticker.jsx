@@ -1,7 +1,7 @@
 import React from 'react';
 
 const SponsorsTicker = ({ allSponsors }) => {
-  const SCROLL_DURATION = allSponsors.length * 2; // Adjust timing based on number of sponsors
+  const SCROLL_DURATION = allSponsors.length*0.5 ; // Adjust timing based on number of sponsors
   
   return (
     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent py-4">

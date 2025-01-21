@@ -1,35 +1,78 @@
-import React from 'react';
-import logo from '../components/photos/zero.png';
+import React, { useState } from 'react';
+import { X } from 'lucide-react';
 
-const NewsletterSignup = () => {
+const Newsletter = () => {
+  const [email, setEmail] = useState('');
+  const [agreed, setAgreed] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (email && agreed) {
+      console.log('Subscribed:', email);
+      // Handle subscription logic here
+    }
+  };
+
   return (
-    <div className="bg-gradient-to-r from-black via-gray-900 to-black text-white p-6 sm:p-8 lg:p-12 text-center rounded-lg shadow-lg">
-      <div className="flex justify-center mb-6">
-        <img
-          src={logo}
-          alt="ZQG Logo"
-          className="h-14 sm:h-20 md:h-24 w-auto transition-transform duration-300 transform scale-110 object-contain opacity-80 hover:opacity-100 hover:scale-125"
+    <div className="bg-black p-8 rounded-2xl max-w-2xl w-full">
+      {/* Wave Image */}
+      <div className="w-full h-48 overflow-hidden rounded-xl mb-8">
+        <img 
+          src="/api/placeholder/800/200" 
+          alt="Colorful waves"
+          className="w-full h-full object-cover"
         />
       </div>
-      <h2 className="text-3xl sm:text-4xl font-extrabold mb-4">JOIN THE CLUB</h2>
-      <p className="mb-6 text-sm sm:text-base lg:text-lg">
-        Sign up for our newsletter to stay updated on product drops, news, and exclusive offers.
-      </p>
-      <form className="flex flex-col sm:flex-row justify-center items-center gap-4">
-        <input
-          type="email"
-          placeholder="Your email address"
-          className="p-3 w-full sm:w-auto sm:flex-grow border border-gray-700 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-red-500"
-        />
-        <button
-          type="submit"
-          className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-md font-semibold shadow-md hover:shadow-lg transition-all duration-300"
-        >
-          Sign Up
-        </button>
-      </form>
+
+      {/* Content */}
+      <div className="space-y-6">
+        <h2 className="text-3xl font-bold text-white">
+          Be the first who see the news
+        </h2>
+        <p className="text-gray-400">
+          Your company may not be in the software business, but eventually, a software company will be in your business.
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="flex gap-4">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="flex-1 px-4 py-2 bg-gray-900 border border-gray-800 rounded-lg 
+                       text-white placeholder-gray-500 focus:outline-none focus:border-gray-700"
+              required
+            />
+            <button
+              type="submit"
+              className="bg-white text-black px-6 py-2 rounded-lg font-medium 
+                       hover:bg-gray-100 transition-colors disabled:opacity-50"
+              disabled={!email || !agreed}
+            >
+              SUBSCRIBE
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="terms"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+              className="w-4 h-4 rounded border-gray-700 bg-gray-900"
+            />
+            <label htmlFor="terms" className="text-gray-400 text-sm">
+              I agree with the{' '}
+              <a href="#" className="text-white underline hover:text-gray-300">
+                Terms and Conditions
+              </a>
+            </label>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
 
-export default NewsletterSignup;
+export default Newsletter;
