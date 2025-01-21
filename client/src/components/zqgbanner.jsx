@@ -15,15 +15,14 @@ const ZQGBanner = () => {
       <div className="relative z-10 text-center p-8">
         <div className="space-y-4 max-w-4xl">
           <h1 className="text-red-500 font-bold text-5xl md:text-6xl tracking-wider">
-            GAME BETTER.
+            ZERO QUANTUM GRAVITY
           </h1>
           <div className="text-4xl md:text-5xl font-bold leading-tight tracking-wider text-white">
-            <div>19 YEARS LEADING</div>
+            <div>6+ YEARS OF LEADING</div>
             <div>ESPORTS PERFORMANCE</div>
           </div>
           <p className="text-gray-300 text-lg md:text-xl mt-6 max-w-2xl mx-auto">
-            FNATIC is a global esports performance brand headquartered in London,
-            laser-focused on leveling up every gamer.
+          Rendezvous ◦ Recreation ◦ Entertainment 
           </p>
         </div>
       </div>
