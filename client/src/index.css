@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes marquee {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .animate-marquee {
+    display: flex;
+    animation: marquee 10s linear infinite;
+    will-change: transform; /* Optimizes performance */
+  }
+  .marquee-container {
+    overflow-x: hidden; /* Hide overflowing content */
+  }
+  
+  .marquee-content { /* Add this class to the duplicated sponsor content */
+    white-space: nowrap;
+    animation: marquee 10s linear infinite;
+  }

@@ -101,7 +101,7 @@ function Efootball() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate form inputs
@@ -116,24 +116,46 @@ function Efootball() {
       return;
     }
 
-    setError('');
-    alert('Registration successful!');
-    console.log('Form Data:', formData);
+    try {
+      const response = await fetch('http://localhost:8080/api/register-users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    // Add the team to the list of registered teams
-    setRegisteredTeams([...registeredTeams, formData.team]);
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        setError(`Registration failed: ${errorMessage}`);
+        return;
+      }
 
-    // Reset form
-    setFormData({
-      name: '',
-      username: '',
-      team: '',
-      phone: '',
-    });
+      const data = await response.json();
+      alert('Registration successful!');
+      console.log('API Response:', data);
+
+      // Add the team to the list of registered teams
+      setRegisteredTeams([...registeredTeams, formData.team]);
+
+      // Reset form
+      setFormData({
+        name: '',
+        username: '',
+        team: '',
+        phone: '',
+      });
+      setError('');
+    } catch (err) {
+      console.error('Error:', err);
+      setError('An error occurred while registering. Please try again later.');
+    }
   };
 
   // Filter out teams that are already registered
-  const availableTeams = initialTeams.filter(team => !registeredTeams.includes(team));
+  const availableTeams = initialTeams.filter(
+    (team) => !registeredTeams.includes(team)
+  );
 
   return (
     <>
@@ -143,12 +165,17 @@ function Efootball() {
           <div className="pt-5 text-white">
             <header className="py-5 mt-5">
               <h4 className="lead mb-0">ZQG</h4>
-              <h1 className="dm-serif-display-regular">Efootball Tournament 2025</h1>
+              <h1 className="dm-serif-display-regular">
+                Efootball Tournament 2025
+              </h1>
               <h4 className="lead mb-0">Esports</h4>
             </header>
           </div>
         </div>
-        <form className="registration-form-container" onSubmit={handleSubmit}>
+        <form
+          className="registration-form-container"
+          onSubmit={handleSubmit}
+        >
           <h1 className="dm-serif-display-regular">Registrations Open</h1>
           {error && <p className="error-message">{error}</p>}
           <label htmlFor="name" className="text-white">Name</label>
@@ -158,7 +185,7 @@ function Efootball() {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            placeholder='Enter your full name'
+            placeholder="Enter your full name"
             required
           />
           <label htmlFor="username" className="text-white">Username</label>
@@ -168,7 +195,7 @@ function Efootball() {
             name="username"
             value={formData.username}
             onChange={handleChange}
-            placeholder='Enter username (e.g., @username)'
+            placeholder="Enter username (e.g., @username)"
             required
           />
           <label htmlFor="team" className="text-white">Team</label>
@@ -194,7 +221,7 @@ function Efootball() {
             value={formData.phone}
             onChange={handleChange}
             required
-            placeholder='phone: 123-456-7890'
+            placeholder="phone: 123-456-7890"
           />
           <button type="submit" className="btn btn-primary">Register Now</button>
         </form>

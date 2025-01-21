@@ -1,0 +1,73 @@
+/* Global table styling */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+table {
+    min-width: 100%;
+    text-align: left;
+    text-transform: capitalize;
+    border-collapse: collapse;
+    font-size: 0.875rem; /* Equivalent to text-sm */
+    color: #D1D5DB; /* Equivalent to text-gray-400 */
+    
+}
+
+table thead {
+    background-color: #1F2937; /* Equivalent to bg-gray-800 */
+    font-size: 0.75rem; /* Equivalent to text-xs */
+    font-weight: 500; /* Equivalent to font-medium */
+    text-transform: uppercase;
+}
+
+table thead th {
+    padding: 0.75rem 1.5rem; /* Equivalent to px-6 py-3 */
+    text-align: left;
+    letter-spacing: 0.05em; /* Tracking wider */
+}
+
+table tbody {
+    background-color: #1F2937; /* Equivalent to bg-gray-800 */
+}
+
+table tbody tr {
+    background-color: rgba(0, 0, 0, 0.2); /* Equivalent to bg-black bg-opacity-20 */
+}
+
+table tbody tr:nth-child(even) {
+    background-color: rgba(31, 41, 55, 0.8); /* Alternate row styling */
+}
+
+table tbody td {
+    padding: 0.75rem 1.5rem; /* Equivalent to px-6 py-4 */
+    white-space: nowrap; /* Equivalent to whitespace-nowrap */
+}
+
+table tbody .flex {
+    display: flex;
+    align-items: center;
+}
+
+table tbody img {
+    width: 1.25rem; /* Equivalent to w-5 */
+    margin-right: 0.5rem; /* Equivalent to ml-2 */
+}
+
+table tbody svg {
+    width: 1rem; /* Equivalent to w-4 */
+    margin-right: 0.25rem;
+}
+
+/* Example for text colors */
+.text-green-600 {
+    color: #16A34A;
+}
+
+.text-red-500 {
+    color: #EF4444;
+}
+
+.text-gray-400 {
+    color: #9CA3AF;
+}
