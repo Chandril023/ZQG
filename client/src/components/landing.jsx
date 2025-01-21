@@ -8,12 +8,12 @@ import NewsletterSignup from "./joinus"
 import SponsorsTicker from "./sponserticker.jsx"
 const sponsors = [
   { name: 'SONY', path: 'https://sony.scene7.com/is/content/sonyglobalsolutions/sony-logo?$S7Product$' },
-  { name: 'APPLE', path: 'https://imgcdn.stablediffusionweb.com/2024/9/29/40e5f1f8-f9ad-43df-b6ad-f9290b513106.jpg' },
+  
   { name: 'REALME', path: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaW-miAOJzGIg2s7bFzzyDKGJ_9aRAmcinFA&s' },
   { name: 'NIKE', path: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQShZC-aRMjhBjWR8HqOAZPXCyMDC7ueGE2pg&s' },
   { name: 'ADIDAS', path: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRasOYhhl1JOL67FjasGcc3zuRCizxN6B6egw&s' },
   { name: 'KONAMI', path: 'https://external-preview.redd.it/konami-announces-record-high-revenue-but-profits-slump-v0--HS_Nrg9Ao51GovP3owmuHf8tJfnlJo9Ou2sa3_Upiw.jpg?width=640&crop=smart&auto=webp&s=1f40bf465f31e4417e951b100b71aba7ebbee70f' },
-  
+  { name: 'APPLE', path: 'https://imgcdn.stablediffusionweb.com/2024/9/29/40e5f1f8-f9ad-43df-b6ad-f9290b513106.jpg' },
 ];
 
 const allSponsors = [...sponsors, ...sponsors];
@@ -42,12 +42,10 @@ export default function Landing() {
                         </div>
                     </div>
                     <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/50 to-transparent"><SponsorsTicker allSponsors={allSponsors} /></div>
-                  
-
+                
                 </section>
-
                 {/* Second Section */}
-                <section className="min-h-screen pb-8">
+                <section className="min-h-screen pb-8 py-4">
                     <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 p-4 md:p-6">
                         {/* Grid 3 - Newsletter Signup */}
                         <div className="col-span-1 row-span-2 md:col-span-1 md:row-span-1 backdrop-blur-lg text-white rounded-xl shadow-lg overflow-hidden">
@@ -64,8 +62,9 @@ export default function Landing() {
                         </div>
                     </div>
                 </section>
+                <Footer />
             </div>
-            <Footer />
+            
         </div>
     )
 }

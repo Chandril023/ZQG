@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ShoppingBag, Menu, X } from 'lucide-react';
-
+import logo from '../components/photos/zero.png';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showLive, setShowLive] = useState(false);
@@ -32,9 +32,13 @@ const Navbar = () => {
 
         {/* Center Logo for Mobile, Left for Desktop */}
         <div className="flex items-center md:space-x-8 md:px-6">
-          <div className="text-orange-500 font-bold text-2xl">
-            ZQG
-          </div>
+        <div className="flex items-center mb-4">
+          <img
+            src={logo}
+            alt="ZQG"
+            className="h-8 sm:h-12 md:h-16 w-auto duration-300 transform scale-110 object-contain opacity-80 hover:opacity-100"
+          />
+        </div>
           {/* Navigation Items - Hidden on Mobile */}
           <div className="hidden md:flex items-center space-x-6">
             {navItems.map((item) => (
