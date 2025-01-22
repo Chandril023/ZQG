@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './adminlanding.css';
 import { SignOutButton } from '@clerk/clerk-react';
 import { Upload } from 'lucide-react';
-import './table.css';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Dashboard = () => {
   const [registeredUsers, setRegisteredUsers] = useState([]);
@@ -19,6 +18,7 @@ const Dashboard = () => {
     payments: null,
     table: null,
   });
+  const [sidebarOpen, setSidebarOpen] = useState(true); // Manage sidebar state
   const frontend = "http://localhost:8080";
 
   // Fetch registered users
@@ -69,8 +69,6 @@ const Dashboard = () => {
       method: 'DELETE',
     })
       .then(() => {
-        console.log('Old table data deleted successfully!');
-        
         const newUsers = registeredUsers.map(user => ({
           username: user.username,
           name: user.name,
@@ -91,7 +89,7 @@ const Dashboard = () => {
         })
           .then(() => {
             alert('New table created successfully!');
-            window.location.reload(); 
+            window.location.reload();
           })
           .catch(() => {
             alert('Failed to create new table.');
@@ -101,7 +99,7 @@ const Dashboard = () => {
         alert('Failed to delete old table data.');
       });
   };
-  
+
   // Update Table
   const updateTable = (username, updatedValues) => {
     fetch(`${frontend}/admin/edit-table/${username}`, {
@@ -121,371 +119,196 @@ const Dashboard = () => {
       .catch(() => alert('Failed to update table.'));
   };
 
-  // Registered Users Section
-// Registered Users Section
-const RegisteredUsersSection = () => (
-  <section className="user-section card">
-    <h2 className="section-title">Registered Users</h2>
-    {loading.users ? (
-      <p>Loading...</p>
-    ) : error.users ? (
-      <p className="error-text">{error.users}</p>
-    ) : (
-      <div className="table-container">
-        <table className="table styled-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Username</th>
-              <th>Team Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            {registeredUsers.map((user, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{user.name}</td>
-                <td>{user.username}</td>
-                <td>{user.team || 'N/A'}</td>
+  const RegisteredUsersSection = () => (
+    <section className="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <h2 className="text-xl font-semibold mb-4">Registered Users</h2>
+      {loading.users ? (
+        <p className="text-gray-500">Loading...</p>
+      ) : error.users ? (
+        <p className="text-red-500">{error.users}</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full table-auto">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team Name</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    )}
-  </section>
-);
-
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {registeredUsers.map((user, index) => (
+                <tr key={index} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{user.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{user.username}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{user.team || 'N/A'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
 
   const PaymentSection = () => {
     const [formData, setFormData] = useState({
-        name: '',
-        username: '',
-        signature: '',
-        screenshot: null,
+      name: '',
+      username: '',
+      signature: '',
+      screenshot: null,
     });
-    const [payments, setPayments] = useState([]); // Initialize as empty array
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchPayments = async () => {
-            try {
-                const response = await fetch(`${frontend}/api/payments`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch payments');
-                }
-                const data = await response.json();
-                setPayments(Array.isArray(data) ? data : []);
-                setLoading(false);
-            } catch (err) {
-                setError(err.message);
-                setLoading(false);
-            }
-        };
-
-        fetchPayments();
-    }, []);
 
     const handleInputChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
     };
 
     const handleFileChange = (e) => {
-        setFormData({
-            ...formData,
-            screenshot: e.target.files[0],
-        });
+      setFormData({
+        ...formData,
+        screenshot: e.target.files[0],
+      });
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+      e.preventDefault();
 
-        const formPayload = new FormData();
-        formPayload.append('name', formData.name);
-        formPayload.append('username', formData.username);
-        formPayload.append('signature', formData.signature);
-        formPayload.append('screenshot', formData.screenshot);
+      const formPayload = new FormData();
+      formPayload.append('name', formData.name);
+      formPayload.append('username', formData.username);
+      formPayload.append('signature', formData.signature);
+      formPayload.append('screenshot', formData.screenshot);
 
-        try {
-            const response = await fetch(`${frontend}/api/payments`, {
-                method: 'POST',
-                body: formPayload,
-            });
+      try {
+        const response = await fetch(`${frontend}/api/payments`, {
+          method: 'POST',
+          body: formPayload,
+        });
 
-            if (!response.ok) {
-                throw new Error('Failed to add payment verification');
-            }
-
-            const newPayment = await response.json();
-            setPayments((prev) => [...prev, newPayment]);
-
-            setFormData({
-                name: '',
-                username: '',
-                signature: '',
-                screenshot: null,
-            });
-
-            alert('Payment verification added successfully!');
-        } catch (err) {
-            alert(err.message || 'Error adding payment verification');
+        if (!response.ok) {
+          throw new Error('Failed to add payment verification');
         }
+
+        const newPayment = await response.json();
+        setPayments((prev) => [...prev, newPayment]);
+
+        setFormData({
+          name: '',
+          username: '',
+          signature: '',
+          screenshot: null,
+        });
+
+        alert('Payment verification added successfully!');
+      } catch (err) {
+        alert(err.message || 'Error adding payment verification');
+      }
     };
 
     return (
-        <section className="payment-section card">
-            <h2 className="section-title">Payment Verifications</h2>
+      <section className="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <h2 className="text-xl font-semibold mb-4">Payment Verifications</h2>
 
-            <div className="form-container">
-                <h3 className="form-title">Add New Payment Verification</h3>
-                <form onSubmit={handleSubmit} className="payment-form">
-                    <div className="form-group">
-                        <label>Name:</label>
-                        <input
-                            type="text"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            className="input-field"
-                            required
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label>Username:</label>
-                        <input
-                            type="text"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleInputChange}
-                            className="input-field"
-                            required
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label>Digital Signature:</label>
-                        <input
-                            type="text"
-                            name="signature"
-                            value={formData.signature}
-                            onChange={handleInputChange}
-                            className="input-field"
-                            required
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label>Payment Screenshot:</label>
-                        <div className="file-upload">
-                            <label className="upload-btn">
-                                Upload Image
-                                <input
-                                    type="file"
-                                    onChange={handleFileChange}
-                                    accept="image/*"
-                                    className="hidden-file-input"
-                                    required
-                                />
-                            </label>
-                            {formData.screenshot && (
-                                <span className="file-name">
-                                    {formData.screenshot.name}
-                                </span>
-                            )}
-                        </div>
-                    </div>
-
-                    <button type="submit" className="submit-btn">
-                        Add Payment Verification
-                    </button>
-                </form>
+        <div className="bg-gray-50 p-6 rounded-lg mb-6">
+          <h3 className="text-lg font-medium mb-4">Add New Payment Verification</h3>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Name:</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
             </div>
 
-            <div className="existing-payments">
-                <h3 className="existing-title">Existing Verifications</h3>
-                {loading ? (
-                    <p>Loading payments...</p>
-                ) : error ? (
-                    <p className="error-text">Error: {error}</p>
-                ) : payments.length === 0 ? (
-                    <p>No payment verifications found.</p>
-                ) : (
-                    <table className="payments-table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Username</th>
-                                <th>Token</th>
-                                <th>Date Added</th>
-                                <th>Screenshot</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {payments.map((payment, index) => (
-                                <tr key={index}>
-                                    <td>{payment.name}</td>
-                                    <td>{payment.username}</td>
-                                    <td>{payment.token}</td>
-                                    <td>{new Date(payment.createdAt).toLocaleDateString()}</td>
-                                    <td>
-                                        <button
-                                            onClick={() => window.open(payment.screenshotUrl, '_blank')}
-                                            className="view-btn"
-                                        >
-                                            View
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                )}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Username:</label>
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
             </div>
-        </section>
-    );
-};
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Digital Signature:</label>
+              <input
+                type="text"
+                name="signature"
+                value={formData.signature}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
 
-  const LeagueTableSection = () => {
-    const [editingRow, setEditingRow] = useState(null);
-    const [editValues, setEditValues] = useState({});
-  
-    const calculatePoints = (team) => 3 * team.wins + team.draws;
-    const calculateGoalDifference = (team) => team.goalsScored - team.goalsConceded;
-    const calculateMatchesPlayed = (team) => team.wins + team.draws + team.losses;
-  
-    const sortedTableData = [...tableData].sort((a, b) => {
-      const pointsA = calculatePoints(a);
-      const pointsB = calculatePoints(b);
-  
-      if (pointsA !== pointsB) return pointsB - pointsA;
-      const goalDiffA = calculateGoalDifference(a);
-      const goalDiffB = calculateGoalDifference(b);
-      return goalDiffB - goalDiffA;
-    });
-  
-    const handleInputChange = (e, field) => {
-      setEditValues({ ...editValues, [field]: e.target.value });
-    };
-  
-    const handleSave = (row) => {
-      const updatedValues = {
-        ...row,
-        ...editValues,
-        wins: parseInt(editValues.wins || row.wins, 10),
-        draws: parseInt(editValues.draws || row.draws, 10),
-        losses: parseInt(editValues.losses || row.losses, 10),
-        goalsScored: parseInt(editValues.goalsScored || row.goalsScored, 10),
-        goalsConceded: parseInt(editValues.goalsConceded || row.goalsConceded, 10),
-      };
-      updateTable(row.username, updatedValues);
-      setEditingRow(null);
-      setEditValues({});
-      window.location.reload();
-    };
-  
-    return (
-      <section className="card">
-        <h2>League Table</h2>
-        {loading.table ? (
-          <p>Loading...</p>
-        ) : error.table ? (
-          <p className="error">{error.table}</p>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Payment Screenshot:</label>
+              <div className="flex items-center space-x-2">
+                <label className="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer hover:bg-blue-600 transition-colors">
+                  <Upload className="inline-block mr-2" />
+                  Upload Screenshot
+                  <input
+                    type="file"
+                    name="screenshot"
+                    onChange={handleFileChange}
+                    className="hidden"
+                    accept="image/*"
+                    required
+                  />
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                className="w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+              >
+                Submit Payment Verification
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {loading.payments ? (
+          <p className="text-gray-500">Loading...</p>
+        ) : error.payments ? (
+          <p className="text-red-500">{error.payments}</p>
         ) : (
-          <div className="table-container">
-            <table className="league-table">
-              <thead>
+          <div className="overflow-x-auto">
+            <table className="w-full table-auto">
+              <thead className="bg-gray-50">
                 <tr>
-                  <th>#</th>
-                  <th>User Name</th>
-                  <th>Base Team</th>
-                  <th>Matches Played</th>
-                  <th>Wins</th>
-                  <th>Draws</th>
-                  <th>Losses</th>
-                  <th>Goals Scored</th>
-                  <th>Goals Conceded</th>
-                  <th>Goal Difference</th>
-                  <th>Points</th>
-                  <th>Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Signature</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Screenshot</th>
                 </tr>
               </thead>
-              <tbody>
-                {sortedTableData.map((row, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{row.username}</td>
-                    <td>{row.team}</td>
-                    <td>{calculateMatchesPlayed(row)}</td>
-                    <td>
-                      {editingRow === row.username ? (
-                        <input
-                          type="number"
-                          defaultValue={row.wins}
-                          onChange={(e) => handleInputChange(e, 'wins')}
-                        />
-                      ) : (
-                        row.wins
-                      )}
-                    </td>
-                    <td>
-                      {editingRow === row.username ? (
-                        <input
-                          type="number"
-                          defaultValue={row.draws}
-                          onChange={(e) => handleInputChange(e, 'draws')}
-                        />
-                      ) : (
-                        row.draws
-                      )}
-                    </td>
-                    <td>
-                      {editingRow === row.username ? (
-                        <input
-                          type="number"
-                          defaultValue={row.losses}
-                          onChange={(e) => handleInputChange(e, 'losses')}
-                        />
-                      ) : (
-                        row.losses
-                      )}
-                    </td>
-                    <td>
-                      {editingRow === row.username ? (
-                        <input
-                          type="number"
-                          defaultValue={row.goalsScored}
-                          onChange={(e) => handleInputChange(e, 'goalsScored')}
-                        />
-                      ) : (
-                        row.goalsScored
-                      )}
-                    </td>
-                    <td>
-                      {editingRow === row.username ? (
-                        <input
-                          type="number"
-                          defaultValue={row.goalsConceded}
-                          onChange={(e) => handleInputChange(e, 'goalsConceded')}
-                        />
-                      ) : (
-                        row.goalsConceded
-                      )}
-                    </td>
-                    <td>{calculateGoalDifference(row)}</td>
-                    <td>{calculatePoints(row)}</td>
-                    <td>
-                      {editingRow === row.username ? (
-                        <button onClick={() => handleSave(row)}>Save</button>
-                      ) : (
-                        <button onClick={() => setEditingRow(row.username)}>Edit</button>
-                      )}
+              <tbody className="bg-white divide-y divide-gray-200">
+                {payments.map((payment, index) => (
+                  <tr key={index} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{payment.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{payment.username}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{payment.signature}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <a href={payment.screenshot} target="_blank" rel="noopener noreferrer">
+                        View Screenshot
+                      </a>
                     </td>
                   </tr>
                 ))}
@@ -493,68 +316,123 @@ const RegisteredUsersSection = () => (
             </table>
           </div>
         )}
-        <button onClick={createTable}>Create New Table</button>
       </section>
     );
   };
 
-  // Render Content based on active section
-  const renderContent = () => {
-    switch (activeSection) {
-      case 'dashboard':
-        return (
+  const LeagueTableSection = () => (
+    <section className="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <h2 className="text-xl font-semibold mb-4">League Table</h2>
+
+      {loading.table ? (
+        <p className="text-gray-500">Loading...</p>
+      ) : error.table ? (
+        <p className="text-red-500">{error.table}</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full table-auto">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Points</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Matches Played</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Goals Scored</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Goals Conceded</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Goal Difference</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {tableData.map((row, index) => (
+                <tr key={index} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{row.username}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{row.team}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{row.points}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{row.matchesPlayed}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{row.goalsScored}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{row.goalsConceded}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{row.goalDifference}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+
+  return (
+    <div className="flex min-h-screen">
+      {/* Sidebar */}
+      <div
+        className={`transition-all duration-300 ease-in-out ${sidebarOpen ? 'w-64' : 'w-0'} bg-gray-800 text-white p-6`}
+      >
+        {/* Toggle Button */}
+        <button
+          className="text-white bg-gray-700 rounded-full p-2 absolute top-4 left-4"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        >
+          {sidebarOpen ? <ChevronLeft /> : <ChevronRight />}
+        </button>
+
+        {/* Sidebar Content */}
+        {sidebarOpen && (
+          <>
+            <h2 className="text-2xl font-semibold mb-8">Admin Dashboard</h2>
+            <nav className="space-y-4">
+              <button
+                onClick={() => setActiveSection('dashboard')}
+                className="w-full text-left py-2 px-4 hover:bg-gray-700 rounded-md"
+              >
+                Dashboard
+              </button>
+              <button
+                onClick={() => setActiveSection('registeredUsers')}
+                className="w-full text-left py-2 px-4 hover:bg-gray-700 rounded-md"
+              >
+                Registered Users
+              </button>
+              <button
+                onClick={() => setActiveSection('payments')}
+                className="w-full text-left py-2 px-4 hover:bg-gray-700 rounded-md"
+              >
+                Payments
+              </button>
+              <button
+                onClick={() => setActiveSection('leagueTable')}
+                className="w-full text-left py-2 px-4 hover:bg-gray-700 rounded-md"
+              >
+                League Table
+              </button>
+            </nav>
+          </>
+        )}
+      </div>
+
+      {/* Main content */}
+      <div className={`flex-1 bg-gray-100 p-6 ${sidebarOpen ? '' : 'w-full'}`}>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-semibold">Admin Dashboard</h1>
+          <SignOutButton
+            className="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600"
+          >
+            Sign Out
+          </SignOutButton>
+        </div>
+
+        {activeSection === 'dashboard' && (
           <>
             <RegisteredUsersSection />
             <PaymentSection />
             <LeagueTableSection />
           </>
-        );
-      case 'users':
-        return <RegisteredUsersSection />;
-      case 'payments':
-        return <PaymentSection />;
-      case 'league':
-        return <LeagueTableSection />;
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div className="dashboard-container">
-      <nav className="sidebar">
-        <div className="sidebar-header">
-          <h3>Admin Dashboard</h3>
-        </div>
-        <ul className="sidebar-menu">
-          <li 
-            className={activeSection === 'dashboard' ? 'active' : ''} 
-            onClick={() => setActiveSection('dashboard')}
-          >
-            Dashboard
-          </li>
-          <li 
-            className={activeSection === 'users' ? 'active' : ''} 
-            onClick={() => setActiveSection('users')}
-          >
-            Users
-          </li>
-          <li 
-            className={activeSection === 'payments' ? 'active' : ''} 
-            onClick={() => setActiveSection('payments')}
-          >
-            Payments
-          </li>
-          <li 
-            className={activeSection === 'league' ? 'active' : ''} 
-            onClick={() => setActiveSection('league')}
-          >
-            League Table
-          </li>
-        </ul>
-        <SignOutButton />
-      </nav>
-      <main className="dashboard-content">{renderContent()}</main>
+        )}
+        {activeSection === 'registeredUsers' && <RegisteredUsersSection />}
+        {activeSection === 'payments' && <PaymentSection />}
+        {activeSection === 'leagueTable' && <LeagueTableSection />}
+      </div>
     </div>
   );
 };

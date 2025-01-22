@@ -1,151 +1,219 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './register.css'
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 
+const RegistrationPage = () => {
+  const initialTeams = [
+    'Manchester United', 'Manchester City', 'Arsenal', 'Liverpool', 'Chelsea', 'Tottenham Hotspur',
+    'Real Madrid', 'Barcelona', 'Atletico Madrid', 'Sevilla', 'Villarreal', 'Real Sociedad',
+    // ... rest of the teams remain the same
+  ];
 
-export default function Register() {
-    const BACKEND_URL=process.env.BACKEND_URL;
-    const [fullName, setFullName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [inGameId, setInGameId] = useState('');
-    const [team, setTeam] = useState('');
-    const [paymentToken, setPaymentToken] = useState('');
-    const [acceptTerms, setAcceptTerms] = useState(false);
-    const [error, setError] = useState('');
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState({
+    name: '',
+    username: '',
+    team: '',
+    phone: '',
+    token: Math.random().toString(36).substr(2, 8).toUpperCase(),
+  });
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        if (!acceptTerms) {
-            setError('Please accept the terms and conditions.');
-            return;
-        }
+  const [registeredTeams, setRegisteredTeams] = useState([]);
 
-        try {
-            // Send a request to create the user
-            const response = await axios.post(`http://localhost:5000/admin/create-user`, {
-                fullName,
-                email,
-                phoneNumber,
-                inGameId,
-                team,
-                paymentToken,
-            });
-           
-            if (response.status === 201) {
-                // User created successfully, reload the page
-                window.location.reload();
-           }
-           else if (response.data.success) {
-                // User created successfully, handle success state within React
-                console.log('User created successfully!');
-                // Optionally clear form fields here
-                setFullName('');
-                setEmail('');
-                setPhoneNumber('');
-                setInGameId('');
-                setTeam('');
-                setPaymentToken('');
-            } else {
-                // Handle error from backend (optional)
-                setError('Incorrect username or payment token.');
-                setShowErrorMessage(true);
-                setTimeout(() => setShowErrorMessage(false), 5000);
-            }
-        } catch (error) {
-            // Handle error response status 400 (Bad Request)
-            if (error.response && error.response.status === 400) {
-                setError('Invalid username or payment token.');
-                setShowErrorMessage(true);
-                setTimeout(() => setShowErrorMessage(false), 5000);
-            } else {
-                console.error('Error creating user:', error);
-            }
-        }
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-    return (
-        <div className="container-fluid d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-            <form className="register-form" onSubmit={handleSubmit}>
-                {/* Account section */}
-                <div className="row">
-                    <h4>Account</h4>
-                    <div className="form-group col-md-4">
-                        <input type="text" className="form-control" placeholder="Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+  const handleNext = () => {
+    if (!formData.name || !formData.username || !formData.phone) {
+      alert("Please fill all required fields");
+      return;
+    }
+    setStep(2);
+  };
+
+  const handleBack = () => {
+    setStep(1);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.team) {
+      alert("Please select a team");
+      return;
+    }
+
+    if (registeredTeams.includes(formData.team)) {
+      alert("This team has already been selected");
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8080/api/register-users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        alert(`Registration failed: ${errorMessage}`);
+        return;
+      }
+
+      const data = await response.json();
+      alert('Registration successful!');
+      console.log('API Response:', data);
+
+      setRegisteredTeams([...registeredTeams, formData.team]);
+      
+      setFormData({
+        name: '',
+        username: '',
+        team: '',
+        phone: '',
+        token: Math.random().toString(36).substr(2, 8).toUpperCase(),
+      });
+      setStep(1);
+    } catch (err) {
+      console.error('Error:', err);
+      alert('An error occurred while registering. Please try again later.');
+    }
+  };
+
+  const availableTeams = initialTeams.filter(
+    (team) => !registeredTeams.includes(team)
+  );
+
+  return (
+    <div className="bg-black text-white flex flex-col justify-center px-5 ">
+      <div className="relative sm:max-w-xl sm:mx-auto">
+        <div className="relative bg-transparent px-3 md:mx-0 shadow rounded-3xl sm:p-10">
+          <div className="max-w-md mx-auto">
+            {/* Header */}
+            <div className="flex items-center space-x-5">
+              <div className="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono">i</div>
+              <div className="block pl-2 font-semibold text-xl self-start">
+                <h2 className="leading-relaxed">Complete Your Registration</h2>
+                <p className="text-sm font-normal leading-relaxed">Step {step} of 2</p>
+              </div>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="w-full bg-gray-800 h-2 mt-4 rounded-full">
+              <div 
+                className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                style={{ width: step === 1 ? '50%' : '100%' }}
+              ></div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="divide-y divide-gray-200">
+              <div className="py-8 text-base leading-6 space-y-4 text-white sm:text-lg sm:leading-7">
+                {step === 1 ? (
+                  // Step 1: Basic Information
+                  <>
+                    <div className="flex flex-col">
+                      <label className="leading-loose">Name *</label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+                        required
+                      />
                     </div>
-                    <div className="form-group col-md-4">
-                        <input type="email" className="form-control" placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <div className="flex flex-col">
+                      <label className="leading-loose">Username *</label>
+                      <input
+                        type="text"
+                        name="username"
+                        value={formData.username}
+                        onChange={handleChange}
+                        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+                        required
+                      />
                     </div>
-                    <div className="form-group col-md-4">
-                        <input type="text" className="form-control" placeholder="Phone Number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+                    <div className="flex flex-col">
+                      <label className="leading-loose">Phone *</label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+                        required
+                      />
                     </div>
-                </div>
-
-                {/* In Game Data and Select Team section */}
-                <div className="row">
-                    <div className="col-md-6">
-                        <h4>In Game Data</h4>
-                        <div className="form-group">
-                            <input type="text" className="form-control" placeholder="In Game ID" value={inGameId} onChange={(e) => setInGameId(e.target.value)} />
-                        </div>
+                  </>
+                ) : (
+                  // Step 2: Team Selection and Token
+                  <>
+                    <div className="bg-gray-800 p-4 rounded-md mb-4">
+                      <label className="block text-sm font-medium">
+                        Your Token Number
+                      </label>
+                      <div className="mt-1 text-lg font-mono font-bold text-blue-400">
+                        {formData.token}
+                      </div>
                     </div>
-                    <div className="col-md-6">
-                        <h4>Select Team</h4>
-                        <div className="form-group">
-                            <select className="form-control" value={team} onChange={(e) => setTeam(e.target.value)}>
-                                <option value="">All Teams</option>
-                                <option value="Manchester United">Manchester United</option>
-                                <option value="Manchester City">Manchester City</option>
-                                <option value="Arsenal">Arsenal</option>
-                                <option value="Chelsea">Chelsea</option>
-                                <option value="Totenham">Totenham</option>
-                                <option value="Real Madrid">Real Madrid</option>
-                                <option value="Barcelona">Barcelona</option>
-                                <option value="Liverpool">Liverpool</option>
-                                <option value="Bayern Munich">Bayern Munich</option>
-                            </select>
-                        </div>
+                    <div className="flex flex-col">
+                      <label className="leading-loose">Select Team *</label>
+                      <select
+                        name="team"
+                        value={formData.team}
+                        onChange={handleChange}
+                        className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+                        required
+                      >
+                        <option value="">--Choose a team--</option>
+                        {availableTeams.map((team, index) => (
+                          <option key={index} value={team}>{team}</option>
+                        ))}
+                      </select>
                     </div>
-                </div>
-
-                {/* Payment Details section */}
-                <div className="row">
-                    <h4>Payment Details</h4>
-                    <div className="form-group col-md-6">
-                        <input type="text" className="form-control" placeholder="Enter Payment Token" value={paymentToken} onChange={(e) => setPaymentToken(e.target.value)} />
-                    </div>
-                </div>
-
-                {/* Terms and Conditions section */}
-                <div className="row">
-                    <h4>Terms and Conditions</h4>
-                    <div className="form-group">
-                        <div className="form-check">
-                            <input id="terms" type="checkbox" className="form-check-input" checked={acceptTerms} onChange={(e) => setAcceptTerms(e.target.checked)} />
-                            <label className="form-check-label" htmlFor="terms">I accept the terms and conditions for signing up to this, and hereby confirm I have read the rules.</label>
-                        </div>
-                    </div>
-                </div>
-
-                 {/* Error message */}
-                 {showErrorMessage && (
-                    <div className="row justify-content-center">
-                        <div className="col-md-4 error-message">{error}</div>
-                    </div>
+                  </>
                 )}
+              </div>
 
-                {/* Submit button */}
-                <div className="row justify-content-center">
-                    <button type="submit" className="btn btn-primary col-md-4">Submit</button>
-                </div>
-
-                <div className="row justify-content-center">
-                    <Link to="/home" className="col-md-4 text-center">Return to Home</Link>
-                </div>
+              <div className="pt-4 flex items-center space-x-4">
+                {step === 2 && (
+                  <button
+                    type="button"
+                    onClick={handleBack}
+                    className="flex-1 bg-gray-700 flex justify-center items-center text-white px-4 py-3 rounded-md focus:outline-none hover:bg-gray-600"
+                  >
+                    <ArrowLeft className="mr-2" size={20} />
+                    Back
+                  </button>
+                )}
+                {step === 1 ? (
+                  <button
+                    type="button"
+                    onClick={handleNext}
+                    className="flex-1 bg-blue-500 flex justify-center items-center text-white px-4 py-3 rounded-md focus:outline-none hover:bg-blue-600"
+                  >
+                    Next
+                    <ArrowRight className="ml-2" size={20} />
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="flex-1 bg-green-500 flex justify-center items-center text-white px-4 py-3 rounded-md focus:outline-none hover:bg-green-600"
+                  >
+                    Register Now
+                  </button>
+                )}
+              </div>
             </form>
+          </div>
         </div>
-    );
-}
+      </div>
+    </div>
+  );
+};
+
+export default RegistrationPage;

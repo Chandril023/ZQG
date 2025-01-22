@@ -11,7 +11,9 @@ const MatchCountdown = () => {
   });
 
 
-
+ const redirectToEfootball = () => {
+    window.location.href = '/efootball';
+ }
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
@@ -71,7 +73,7 @@ const MatchCountdown = () => {
         </div>
 
         {/* Join button */}
-        <button className="mt-4 my-5 sm:mt-8 px-4 sm:px-6 py-2 bg-white text-black font-medium rounded-md hover:bg-gray-100 transition-colors text-sm sm:text-base">
+        <button className="mt-4 my-5 sm:mt-8 px-4 sm:px-6 py-2 bg-white text-black font-medium rounded-md hover:bg-gray-100 transition-colors text-sm sm:text-base" onClick={redirectToEfootball}>
           Register Now
         </button>
 
