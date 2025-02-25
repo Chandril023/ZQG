@@ -11,7 +11,7 @@ const Navbar = () => {
   const navItems = [
     { label: 'Home', href: '/' },
     { label: 'Tournaments', href: '#', dropdown: true },  // Tournaments has a dropdown
-    { label: 'Community', href: '#' },
+    { label: 'Members', href: '/members' },
     { label: 'About Us', href: '#' },
     { label: 'Join', href: '#' },
   ];
@@ -115,11 +115,8 @@ const Navbar = () => {
             <button className="hover:bg-zinc-800 p-2 rounded transition-colors">
               <ShoppingBag size={20} onClick={comingSoon}/>
             </button>
-            <button className="hidden md:block hover:bg-zinc-800 px-4 py-2 rounded transition-colors font-medium">
-              Log In
-            </button>
             <button className="md:inline-block hover:bg-zinc-800 p-2 rounded-full transition-colors md:bg-white md:text-black md:px-4 md:py-2 md:rounded md:hover:bg-gray-200">
-              <span className="hidden md:inline font-medium">Sign Up</span>
+              <span className="hidden md:inline font-medium" onClick={redirectToLogin}>Log In</span>
               <User size={20}
                 className="md:hidden w-6 h-6 rounded-full"
                 onClick={redirectToLogin}

@@ -5,6 +5,7 @@ import Footer from './footer';
 import MatchCountdown from './matchcountdown';
 
 import RegistrationPage from './register';
+import PremierLeagueTable from './table';
 
 function Efootball() {
   
@@ -29,9 +30,15 @@ function Efootball() {
                             </div>
                         </div>
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/50 to-transparent">
-                        
+                    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 gap-6 md:gap-8 p-4 md:p-6">
+                        {/* Grid 3 - Newsletter Signup */}
+                        <div className="col-span-1 row-span-1 md:col-span-1 md:row-span-1 backdrop-blur-lg text-white rounded-xl shadow-lg overflow-hidden">
+                            <div className="h-full bg-gradient-to-b from-white/10 to-black/50">
+                                <PremierLeagueTable/>
+                            </div>
+                        </div>
                     </div>
+                
                 </section>
 </div>
      

@@ -2,7 +2,7 @@ import React from 'react'
 
 const Footer = () => {
   return (
-    <footer className="bg-black lg:grid lg:grid-cols-5 dark:bg-gray-900">
+    <footer className="bg-black lg:grid lg:grid-cols-5 ">
   <div className="relative block h-32 lg:col-span-2 lg:h-full">
     <img
       src="https://images.unsplash.com/photo-1642370324100-324b21fab3a9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80"
@@ -14,23 +14,6 @@ const Footer = () => {
   <div className="px-4 py-16 sm:px-6 lg:col-span-3 lg:px-8">
     <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
       <div>
-        <p>
-          <span className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-            Call us
-          </span>
-
-          <a
-            href="#"
-            className="block text-2xl font-medium text-gray-900 hover:opacity-75 sm:text-3xl dark:text-white"
-          >
-            0123456789
-          </a>
-        </p>
-
-        <ul className="mt-8 space-y-1 text-sm text-gray-700 dark:text-gray-200">
-          <li>Monday to Friday: 10am - 5pm</li>
-          <li>Weekend: 10am - 3pm</li>
-        </ul>
 
         <ul className="mt-8 flex gap-6">
           <li>

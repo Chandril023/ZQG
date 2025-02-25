@@ -5,7 +5,7 @@ import {BrowserRouter, Routes, Route,Navigate} from 'react-router-dom'
 import AdminLogin from './components/adminlogin';
 import AdminDashboard from './components/dashboard';
 import { useState } from 'react';
-
+import Members from './components/member';
 import ProtectedRoute from './components/protectedroute';
 import './App.css'
 import Efootball from './components/efootball';
@@ -28,7 +28,7 @@ function App() {
     </ProtectedRoute>
   }
 />
-
+<Route path='/members' element={<Members/>}/>
         <Route path='/efootball' element={<Efootball/>}/>
      
       </Routes>
