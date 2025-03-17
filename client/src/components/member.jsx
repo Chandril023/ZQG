@@ -45,40 +45,11 @@ const ModernTeamPage = () => {
         <div className="relative z-10 pt-24">
           <div className="container mx-auto px-4 flex flex-col items-center my-12">
             <img src={logo} alt="ZQG" className="h-8 sm:h-12 md:h-16 w-auto duration-300 transform scale-110 object-contain opacity-80 hover:opacity-100" />
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 tracking-wider uppercase text-left dm-serif-display-regular py-10">ROSTER</h1>
+            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 tracking-wider uppercase text-left dm-serif-display-regular py-10">ROSTER 2k25</h1>
           </div>
         </div>
       </div>
 
-      {/* Filter/Search bar section - with same background */}
-      <div className="relative">
-        
-        <div className="relative z-10 py-6">
-          <div className="container mx-auto px-4 w-full md:w-2/3 lg:w-1/2">
-            <div className="relative w-full mb-6">
-              <button 
-                onClick={() => setDropdownOpen(!dropdownOpen)} 
-                className="bg-black bg-opacity-70 text-white px-4 py-2 rounded w-full text-left hover:bg-opacity-90 transition-all"
-              >
-                {activeFilter} <ChevronDown className="inline ml-2" />
-              </button>
-              {dropdownOpen && (
-                <ul className="absolute w-full bg-black bg-opacity-90 text-white mt-1 rounded shadow-lg z-20">
-                  {gameCategories.map((game) => (
-                    <li 
-                      key={game} 
-                      onClick={() => { setActiveFilter(game); setDropdownOpen(false); }} 
-                      className="px-4 py-2 hover:bg-gray-800 cursor-pointer transition-colors"
-                    >
-                      {game}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Content section - pure black background */}
       <div className="bg-black pb-24">
@@ -92,13 +63,13 @@ const ModernTeamPage = () => {
                       <img src={member.photo} alt={member.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-grow text-left">
-                      <div className="uppercase text-xl font-bold text-white dm-serif-display-regular">{member.inGameName}</div>
+                      <div className="uppercase text-xl font-bold text-white dm-serif-display-regular">{member.name}</div>
                       <div className="flex items-center text-gray-400 text-sm">
                         <span className="mr-1 text-gray-500">
                           {member.designation === "Team Captain" ? "IT" : 
                            member.designation === "First in Command" ? "FIC" : "FIC"}
                         </span>
-                        {member.name}
+                        {member.inGameName}
                       </div>
                     </div>
                     <button 

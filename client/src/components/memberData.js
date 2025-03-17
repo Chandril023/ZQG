@@ -1,5 +1,5 @@
 // memberData.js
-import analysis from "../components/photos/analysis.jpg";
+import analysis from './photos/analysis.jpg';
 export const members = [
   {
     id: 1,
@@ -9,15 +9,25 @@ export const members = [
     inGameName: "MuzanSama",
     gamesInvolved: ["Valorant", "PUBG-Mobile", "E-Football"],
     profession: "Software Engineer",
+    socialMedia: {
+      twitter: "@silentscope_pro",
+      twitch: "silentscope_sniper",
+      instagram: "david_sniper_kim"
+    }
   },
   {
     id: 2,
     name: "ZQG Analysis",
-    photo: { analysis },
+    photo:{analysis},
     designation: "Team Captain",
     inGameName: "AnalysisOp",
     gamesInvolved: ["Valorant", "PUBG-Mobile", "E-Football"],
-    profession: "Hizruboi"
+    profession: "Hizruboi",
+    socialMedia: {
+      twitter: "@silentscope_pro",
+      twitch: "silentscope_sniper",
+      instagram: "david_sniper_kim"
+    }
   },
   {
     id: 3,
@@ -26,7 +36,12 @@ export const members = [
     designation: "Team Captain",
     inGameName: "xxBlaze",
     gamesInvolved: [ "PUBG-Mobile", "E-Football"],
-    profession: "BGMI-Paglu"
+    profession: "BGMI-Paglu",
+    socialMedia: {
+      twitter: "@silentscope_pro",
+      twitch: "silentscope_sniper",
+      instagram: "david_sniper_kim"
+    }
   },
   {
     id: 4,
@@ -36,6 +51,11 @@ export const members = [
     inGameName: "LordSidOP",
     gamesInvolved: ["Valorant", "Overwatch 2", "CS:GO"],
     profession: "Competitive Challenge Taker",
+    socialMedia: {
+      twitter: "@silentscope_pro",
+      twitch: "silentscope_sniper",
+      instagram: "david_sniper_kim"
+    }
   },
   {
     id: 5,
@@ -113,7 +133,7 @@ export const members = [
     }
   },
   {
-    id: 9,
+    id: 10,
     name: "ZQG Zernius",
     photo: "/api/placeholder/300/300",
     designation: "First in Command",
@@ -128,7 +148,7 @@ export const members = [
     }
   },
   {
-    id: 9,
+    id: 11,
     name: "ZQG Rage",
     photo: "/api/placeholder/300/300",
     designation: "First in Command",
@@ -143,7 +163,7 @@ export const members = [
     }
   },
   {
-    id: 10,
+    id: 12,
     name: "ZQG Hellfire",
     photo: "/api/placeholder/300/300",
     designation: "First in Command",
@@ -157,35 +177,4 @@ export const members = [
       instagram: "david_sniper_kim"
     }
   }
-];
-
-// Optional: Add team statistics
-export const teamStats = {
-  totalTournaments: 45,
-  tournamentsWon: 28,
-  totalPrizeMoney: "$750,000",
-  currentRank: 3,
-  region: "North America",
-  establishedYear: 2022
-};
-
-// Optional: Add achievement categories for filtering
-export const achievementCategories = [
-  "Tournament Victories",
-  "Individual Awards",
-  "Team Awards",
-  "Community Recognition",
-  "Competitive Rankings"
-];
-
-
-export const gameCategories = [
-  "All Games",
-  "Valorant",
-  "CS:GO", 
-  "Apex Legends",
-  "League of Legends",
-  "Dota 2",
-  "Fortnite",
-  "Overwatch"
 ];
