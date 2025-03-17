@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
-import { Search, ShoppingBag, Menu, X, Home } from 'lucide-react';
+import { Search, ShoppingBag, Menu, X, Home, ChevronDown } from 'lucide-react';
 import { User } from 'lucide-react';
 import logo from '../components/photos/zero.png';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);  // State to toggle dropdown
-  const [isLeaving, setIsLeaving] = useState(false);  // State to track mouse leaving the dropdown
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileTournamentDropdown, setMobileTournamentDropdown] = useState(false);
 
   const navItems = [
     { label: 'Home', href: '/' },
-    { label: 'Tournaments', href: '#', dropdown: true },  // Tournaments has a dropdown
+    { label: 'Tournaments', href: '#', dropdown: true },
     { label: 'Members', href: '/members' },
     { label: 'About Us', href: '#' },
     { label: 'Join', href: '#' },
+  ];
+
+  const tournamentOptions = [
+    { label: 'Efootball 2025', href: '/efootball' }
   ];
 
   const comingSoon = () => {
@@ -24,22 +28,12 @@ const Navbar = () => {
     window.location.href = '/admin/login';
   };
 
-  const handleMouseEnter = () => {
-    setDropdownOpen(true);
-    if (isLeaving) {
-      // If the dropdown was about to close, reset the timeout
-      setIsLeaving(false);
-    }
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
   };
 
-  const handleMouseLeave = () => {
-    setIsLeaving(true);
-    // Add delay before closing dropdown
-    setTimeout(() => {
-      if (isLeaving) {
-        setDropdownOpen(false);
-      }
-    }, 300);  // Adjust the delay (300ms) as needed
+  const toggleMobileTournamentDropdown = () => {
+    setMobileTournamentDropdown(!mobileTournamentDropdown);
   };
 
   return (
@@ -75,18 +69,25 @@ const Navbar = () => {
                 <div 
                   key={item.label} 
                   className="relative"
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
                 >
-                  <a
-                    href={item.href}
-                    className="text-sm font-medium text-white hover:text-gray-300 no-underline transition-colors duration-200"
+                  <button
+                    onClick={toggleDropdown}
+                    className="flex items-center text-sm font-medium text-white hover:text-gray-300 no-underline transition-colors duration-200"
                   >
                     {item.label}
-                  </a>
+                    <ChevronDown size={16} className="ml-1" />
+                  </button>
                   {dropdownOpen && (
                     <div className="absolute bg-black text-white py-2 mt-2 rounded shadow-lg w-48">
-                      <a href="/efootball" className="block px-4 py-2">Efootball 2025</a>
+                      {tournamentOptions.map((option) => (
+                        <a 
+                          key={option.label}
+                          href={option.href} 
+                          className="block px-4 py-2 hover:bg-zinc-800 transition-colors"
+                        >
+                          {option.label}
+                        </a>
+                      ))}
                     </div>
                   )}
                 </div>
@@ -140,13 +141,38 @@ const Navbar = () => {
           </div>
           <div className="mt-4">
             {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="block px-4 py-3 text-sm font-medium text-white hover:text-gray-300 no-underline transition-colors duration-200"
-              >
-                {item.label}
-              </a>
+              item.dropdown ? (
+                <div key={item.label}>
+                  <button
+                    onClick={toggleMobileTournamentDropdown}
+                    className="flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-white hover:bg-black no-underline "
+                  >
+                    <span>{item.label}</span>
+                    <ChevronDown size={16} className={`transition-transform ${mobileTournamentDropdown ? 'rotate-180' : ''}`} />
+                  </button>
+                  {mobileTournamentDropdown && (
+                    <div className="bg-black pl-8">
+                      {tournamentOptions.map((option) => (
+                        <a
+                          key={option.label}
+                          href={option.href}
+                          className="block px-4 py-3 text-sm text-white hover:bg-black no-underline"
+                        >
+                          {option.label}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="block px-4 py-3 text-sm font-medium text-white hover:bg-black no-underline transition-colors duration-200"
+                >
+                  {item.label}
+                </a>
+              )
             ))}
           </div>
         </div>

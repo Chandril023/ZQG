@@ -5,11 +5,15 @@ const ZQGBanner = () => {
     <div className="relative flex flex-col items-center justify-center min-h-[60vh] sm:min-h-[80vh] bg-black overflow-hidden">
       {/* Background Image */}
       <div
-        className="absolute inset-0 w-full h-full bg-cover bg-center opacity-30"
-        style={{
-          backgroundImage: "url('https://wallpapercave.com/wp/wp9767056.jpg')",
-        }}
-      />
+  className="absolute inset-0 bg-cover bg-center z-0"
+  style={{
+    backgroundImage: `
+      linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1)),
+      url('https://t4.ftcdn.net/jpg/05/20/71/15/360_F_520711569_TXpAeak7zUHAb4mb6uRM1iDxZqQMNEbX.jpg')
+    `,
+   
+  }}
+/>
 
       {/* Content Layer */}
       <div className="relative z-10 text-center p-8">
